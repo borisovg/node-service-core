@@ -1,6 +1,6 @@
 {
   "name": "@borisovg/service-core",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Micro-framework for Node.js services",
   "license": "Apache-2.0",
   "main": "./dist/index.js",
