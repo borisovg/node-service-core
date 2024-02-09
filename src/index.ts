@@ -2,7 +2,7 @@ import { loadModules } from './modules';
 import * as shutdown from './shutdown';
 
 export { getLogger, setLogger } from './logger';
-export { getName } from './modules';
+export { getName, loadModules } from './modules';
 export * as shutdown from './shutdown';
 export type * from './types';
 

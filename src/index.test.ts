@@ -15,8 +15,9 @@ describe('index', () => {
     strictEqual(typeof core.getName, 'function');
   });
 
-  it('exports module loader function', () => {
+  it('exports module loader functions', () => {
     strictEqual(typeof core.load, 'function');
+    strictEqual(typeof core.loadModules, 'function');
   });
 
   it('exports shutdown functions', () => {
