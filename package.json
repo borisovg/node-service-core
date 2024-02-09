@@ -16,7 +16,7 @@
     "@types/sinon": "^17",
     "@typescript-eslint/eslint-plugin": "^6",
     "@typescript-eslint/parser": "^6",
-    "c8": "^8",
+    "c8": "^9",
     "eslint": "^8",
     "eslint-config-prettier": "^9",
     "eslint-plugin-import": "^2",
