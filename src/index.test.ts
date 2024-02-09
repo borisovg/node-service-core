@@ -20,6 +20,11 @@ describe('index', () => {
     strictEqual(typeof core.loadModules, 'function');
   });
 
+  it('exports timing functions', () => {
+    strictEqual(typeof core.makeTimer, 'function');
+    strictEqual(typeof core.makeTimerNs, 'function');
+  });
+
   it('exports shutdown functions', () => {
     strictEqual(typeof core.shutdown.add, 'function');
     strictEqual(typeof core.shutdown.run, 'function');
