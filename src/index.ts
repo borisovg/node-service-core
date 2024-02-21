@@ -2,6 +2,7 @@ import { loadModules } from './modules';
 import * as shutdown from './shutdown';
 
 export { getLogger, setLogger } from './logger';
+export { addLoop, getLoop, removeLoop } from './modules/loops';
 export { getName, loadModules } from './modules';
 export * from './timing';
 export * as shutdown from './shutdown';

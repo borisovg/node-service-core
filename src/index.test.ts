@@ -15,6 +15,12 @@ describe('index', () => {
     strictEqual(typeof core.getName, 'function');
   });
 
+  it('exports loop functions', () => {
+    strictEqual(typeof core.addLoop, 'function');
+    strictEqual(typeof core.getLoop, 'function');
+    strictEqual(typeof core.removeLoop, 'function');
+  });
+
   it('exports module loader functions', () => {
     strictEqual(typeof core.load, 'function');
     strictEqual(typeof core.loadModules, 'function');
