@@ -1,16 +1,18 @@
-import { getLogger } from './logger';
+import { config } from './config';
+import { getLogger } from '../logger';
+import type { CoreServiceRegistry } from '../types';
 
-type ActionFn = () => Promise<void>;
+type ShutdownActionFn = () => Promise<void>;
 
+export function $onBind(app: CoreServiceRegistry) {
+  app.core = app.core || {};
+  app.core.shutdown = { add, run };
+}
+
+const actions: Map<string, ShutdownActionFn> = new Map();
 const log = getLogger();
-const actions: Map<string, ActionFn> = new Map();
 
-export const config = {
-  shutdownDelay: 100,
-  shutdownTimeout: 10000,
-};
-
-export function add(id: string, fn: ActionFn) {
+export function add(id: string, fn: ShutdownActionFn) {
   if (actions.has(id)) {
     throw new Error(`Duplicate shutdown action ID: ${id}`);
   }
@@ -33,21 +35,25 @@ export async function run(done?: () => void) {
   }
 
   log.info({ message: 'exiting' });
-  setTimeout(() => process.exit(), config.shutdownDelay);
+  setTimeout(() => process.exit(), config.shutdown.shutdownDelay);
 }
 
-async function runAction(id: string, fn: ActionFn) {
+async function runAction(id: string, fn: ShutdownActionFn) {
   return new Promise<void>((resolve) => {
     const timeout = setTimeout(() => {
       log.warn({ id, message: 'timeout running shutdown action' });
       resolve();
-    }, config.shutdownTimeout);
+    }, config.shutdown.shutdownTimeout);
 
     log.trace({ id, message: 'running shutdown action' });
 
     Promise.resolve(fn())
       .catch((error) => {
-        log.warn({ error, id, message: 'error running shutdown action' });
+        log.warn({
+          error,
+          id,
+          message: 'error running shutdown action',
+        });
       })
       .finally(() => {
         clearTimeout(timeout);

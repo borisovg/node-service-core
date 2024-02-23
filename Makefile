@@ -8,7 +8,7 @@ all: dist
 clean:
 	rm -rf coverage dist node_modules $(NPM_LOCK)
 
-dist: node_modules $(TS_FILES)
+dist: node_modules $(TS_FILES) tsconfig.json Makefile
 	rm -rf dist
 	$(NPM_BIN)/tsc || rm -rf dist
 

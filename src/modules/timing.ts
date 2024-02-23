@@ -1,3 +1,10 @@
+import type { CoreServiceRegistry } from '../types';
+
+export function $onBind(app: CoreServiceRegistry) {
+  app.core = app.core || {};
+  app.core.timing = { makeTimer, makeTimerNs };
+}
+
 /**
  * @returns A function that returns elapsed time in milliseconds.
  */

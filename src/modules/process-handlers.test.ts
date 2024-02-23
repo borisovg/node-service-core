@@ -1,12 +1,15 @@
 import { createSandbox } from 'sinon';
 import { loadModules } from '../modules';
-import * as shutdown from '../shutdown';
+import { config } from './config';
+import * as shutdown from './shutdown';
+import type { CoreServiceRegistry } from '../types';
 
 describe('modules/process-handlers', () => {
+  const app = {} as CoreServiceRegistry;
   const sandbox = createSandbox();
 
   beforeEach(async () => {
-    await loadModules(`${__dirname}/process-handlers.ts`);
+    await loadModules(app, `${__dirname}/process-handlers.ts`);
   });
 
   afterEach(async () => {
@@ -28,7 +31,7 @@ describe('modules/process-handlers', () => {
   });
 
   it('handles SIGTERM events', (done) => {
-    sandbox.replace(shutdown.config, 'shutdownDelay', 10);
+    sandbox.replace(config.shutdown, 'shutdownDelay', 10);
 
     sandbox
       .stub(process, 'exit')

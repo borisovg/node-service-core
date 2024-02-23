@@ -3,7 +3,12 @@ import * as core from '.';
 
 describe('index', () => {
   after((done) => {
-    core.shutdown.run(done);
+    core.shutdown(done);
+  });
+
+  it('exports config object', () => {
+    strictEqual(typeof core.config.shutdown.shutdownDelay, 'number');
+    strictEqual(typeof core.config.shutdown.shutdownTimeout, 'number');
   });
 
   it('exports logger functions', () => {
@@ -15,29 +20,29 @@ describe('index', () => {
     strictEqual(typeof core.getName, 'function');
   });
 
-  it('exports loop functions', () => {
-    strictEqual(typeof core.addLoop, 'function');
-    strictEqual(typeof core.getLoop, 'function');
-    strictEqual(typeof core.removeLoop, 'function');
-  });
-
-  it('exports module loader functions', () => {
+  it('exports module loader function', () => {
     strictEqual(typeof core.load, 'function');
-    strictEqual(typeof core.loadModules, 'function');
   });
 
-  it('exports timing functions', () => {
-    strictEqual(typeof core.makeTimer, 'function');
-    strictEqual(typeof core.makeTimerNs, 'function');
-  });
-
-  it('exports shutdown functions', () => {
-    strictEqual(typeof core.shutdown.add, 'function');
-    strictEqual(typeof core.shutdown.run, 'function');
+  it('exports shutdown function', () => {
+    strictEqual(typeof core.shutdown, 'function');
   });
 
   it('loads modules', async () => {
+    const app = {} as core.CoreServiceRegistry;
     await core.load(`${__dirname}/logger.ts`);
-    await core.load();
+    await core.load([`${__dirname}/logger.ts`]);
+    await core.load(undefined, app);
+
+    strictEqual(typeof app.core.config.shutdown.shutdownDelay, 'number');
+    strictEqual(typeof app.core.config.shutdown.shutdownTimeout, 'number');
+    strictEqual(typeof app.core.loops.add, 'function');
+    strictEqual(typeof app.core.loops.get, 'function');
+    strictEqual(typeof app.core.loops.remove, 'function');
+    strictEqual(typeof app.core.loops.removeAll, 'function');
+    strictEqual(typeof app.core.shutdown.add, 'function');
+    strictEqual(typeof app.core.shutdown.run, 'function');
+    strictEqual(typeof app.core.timing.makeTimer, 'function');
+    strictEqual(typeof app.core.timing.makeTimerNs, 'function');
   });
 });
