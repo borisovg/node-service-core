@@ -32,6 +32,7 @@ describe('index', () => {
     const sr = {} as core.CoreServiceRegistry;
     await core.load(`${__dirname}/logger.ts`);
     await core.load([`${__dirname}/logger.ts`]);
+    await core.load(['']);
     await core.load(undefined, sr);
 
     strictEqual(typeof sr.core.config.shutdown.shutdownDelay, 'number');

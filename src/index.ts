@@ -27,7 +27,9 @@ export async function load<T extends CoreServiceRegistry>(
     await loadModules(sr, path);
   } else if (path) {
     for (const p of path) {
-      await loadModules(sr, p);
+      if (p) {
+        await loadModules(sr, p);
+      }
     }
   }
 }
