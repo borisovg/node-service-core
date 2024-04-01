@@ -1,5 +1,6 @@
+NPM := pnpm
 NPM_BIN := ./node_modules/.bin
-NPM_LOCK := package-lock.json
+NPM_LOCK := pnpm-lock.yaml
 TS_FILES := $(shell find src/ -name '*.ts')
 
 all: dist
@@ -17,12 +18,9 @@ lint: node_modules
 	$(NPM_BIN)/prettier --check 'src/**/*.{js,ts,json,md,yml}'
 	$(NPM_BIN)/eslint src/ --max-warnings 0
 
-node_modules: $(NPM_LOCK)
-	npm install || (rm -rf node_modules; exit 1)
+node_modules: package.json
+	$(NPM) install || (rm -rf node_modules; exit 1)
 	test -d $@ && touch $@ || true
-
-$(NPM_LOCK):
-	npm install
 
 .PHONY: test
 test: dist
