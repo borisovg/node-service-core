@@ -24,9 +24,10 @@ An example of where this might be immediately useful is a collection of HTTP API
 
 In addition to auto-loading, each file can optionally export some hook methods:
 
-- `$onLoad() => Promise<void>` which are run first, blocking start-up until they complete
-- `$onRun() => void` which are run next but are non-blocking
-- `$onShutdown() => Promise<void>` which are run at shutdown, blocking exit until they complete
+- `$onBind(sr: ServiceRegistry, name: string) => Promise<void>` which are run first, blocking start-up until they complete
+- `$onLoad(sr: ServiceRegistry, name: string) => Promise<void>` which are run after, blocking start-up until they complete
+- `$onRun(sr: ServiceRegistry, name:string) => Promise<void>` which are run after, blocking start-up until they complete
+- `$onShutdown(sr: ServiceRegistry, name: string) => Promise<void>` which are run at shutdown, blocking exit until they complete
 
 As an contrived example, we can add the following under `modules/loop.ts`:
 
@@ -49,3 +50,37 @@ export function $onShutdown() {
 
 This module will start logging messages on startup and will clear the timeout before exiting.
 Adding `$onShutdown()` hooks is particularly useful for stopping various event loops during testing, as these may otherwise prevent the test runner from exiting.
+
+## Service Registry
+
+The module hook methods will be called with a service registry object.
+Modules can add new methods and call methods defined by other modules.
+During testing this also makes it easy to mock these methods as required.
+
+As a contrived example our `modules/foo.ts` will add a method to the service registry and re-implement the loop from the example above using built-in loops module:
+
+```ts
+import type { CoreServiceRegistry } from '@borisovg/service-core';
+
+// defined this in top-level "types.ts" file to include all methods your application adds
+export type ServiceRegistry = CoreServiceRegistry & {
+  hello: {
+    greet: (name: string) => void;
+  };
+};
+
+// only use "$onBind" to add methods to the registry
+export function $onBind(sr: ServiceRegistry) {
+  sr.hello = {
+    greet(name) {
+      console.log(`Hello ${name}!`);
+    },
+  };
+}
+
+export function $onRun(sr: ServiceRegistry, name: string) {
+  sr.core.loops.add(name, 1000, () => {
+    sr.hello.greet('World');
+  });
+}
+```

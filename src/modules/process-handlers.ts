@@ -1,5 +1,5 @@
 import { getLogger } from '../logger';
-import * as shutdown from '../shutdown';
+import * as shutdown from './shutdown';
 
 const log = getLogger();
 

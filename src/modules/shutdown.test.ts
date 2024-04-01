@@ -1,40 +1,47 @@
 import { deepStrictEqual, throws } from 'node:assert';
 import { createSandbox } from 'sinon';
-import { shutdown } from '.';
+import { config } from './config';
+import { loadModules } from '../modules';
+import { type CoreServiceRegistry } from '..';
 
-describe('shutdown', () => {
+describe('modules/shutdown', () => {
+  const sr = {} as CoreServiceRegistry;
   const sandbox = createSandbox();
 
+  before(async () => {
+    await loadModules(sr, `${__dirname}/shutdown.ts`);
+  });
+
   afterEach(async () => {
-    await shutdown.run(() => {});
+    await sr.core.shutdown.run(() => {});
     sandbox.restore();
   });
 
   it('throws an error on duplicate ID', () => {
     const fn = () => Promise.resolve();
 
-    shutdown.add('TEST', fn);
+    sr.core.shutdown.add('TEST', fn);
 
-    throws(() => shutdown.add('TEST', fn), {
+    throws(() => sr.core.shutdown.add('TEST', fn), {
       message: 'Duplicate shutdown action ID: TEST',
     });
   });
 
   it('timeout for tasks', (done) => {
-    sandbox.replace(shutdown.config, 'shutdownTimeout', 10);
+    sandbox.replace(config.shutdown, 'shutdownTimeout', 10);
 
-    shutdown.add(
+    sr.core.shutdown.add(
       'TEST',
       () => new Promise((resolve) => setTimeout(resolve, 20)),
     );
 
-    shutdown.run(done);
+    sr.core.shutdown.run(done);
   });
 
   it('logs a message if action failes and continues', (done) => {
     const results: number[] = [];
 
-    shutdown.add(
+    sr.core.shutdown.add(
       'TEST-1',
       () =>
         new Promise((_, reject) => {
@@ -43,7 +50,7 @@ describe('shutdown', () => {
         }),
     );
 
-    shutdown.add(
+    sr.core.shutdown.add(
       'TEST-2',
       () =>
         new Promise((resolve) => {
@@ -52,19 +59,19 @@ describe('shutdown', () => {
         }),
     );
 
-    shutdown.run(() => {
+    sr.core.shutdown.run(() => {
       deepStrictEqual(results, [1, 2]);
       done();
     });
   });
 
   it('exits the process if no callback is passed', (done) => {
-    sandbox.replace(shutdown.config, 'shutdownDelay', 10);
+    sandbox.replace(config.shutdown, 'shutdownDelay', 10);
 
     sandbox
       .stub(process, 'exit')
       .callsFake((() => done()) as typeof process.exit);
 
-    shutdown.run();
+    sr.core.shutdown.run();
   });
 });

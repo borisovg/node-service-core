@@ -1,24 +1,33 @@
 import { loadModules } from './modules';
-import * as shutdown from './shutdown';
+import { run as shutdown } from './modules/shutdown';
+import { CoreServiceRegistry } from './types';
 
+export { config } from './modules/config';
 export { getLogger, setLogger } from './logger';
-export { addLoop, getLoop, removeLoop } from './modules/loops';
-export { getName, loadModules } from './modules';
-export * from './timing';
-export * as shutdown from './shutdown';
+export { getName } from './modules';
 export type * from './types';
+export { shutdown };
 
 let firstLoad = true;
 
-export async function load(path?: string) {
+export async function load<T extends CoreServiceRegistry>(
+  path?: string | string[],
+  registry?: T,
+) {
   if (!firstLoad) {
-    shutdown.run(() => {});
+    shutdown(() => {});
   }
 
-  firstLoad = false;
-  await loadModules(`${__dirname}/modules`, 'core');
+  const sr = registry || {};
 
-  if (path) {
-    await loadModules(path);
+  firstLoad = false;
+  await loadModules<T>(sr, `${__dirname}/modules`, 'core');
+
+  if (typeof path === 'string') {
+    await loadModules(sr, path);
+  } else if (path) {
+    for (const p of path) {
+      await loadModules(sr, p);
+    }
   }
 }

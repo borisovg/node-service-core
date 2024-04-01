@@ -1,9 +1,15 @@
 import { strictEqual } from 'node:assert';
 import { createSandbox } from 'sinon';
-import { makeTimer, makeTimerNs } from '.';
+import { type CoreServiceRegistry } from '..';
+import { loadModules } from '../modules';
 
-describe('timing', () => {
+describe('modules/timing', () => {
+  const sr = {} as CoreServiceRegistry;
   const sandbox = createSandbox();
+
+  before(async () => {
+    await loadModules(sr, `${__dirname}/timing.ts`);
+  });
 
   it('makeTimer returns function that returns diff in milliseconds', () => {
     const t1 = Date.now();
@@ -16,7 +22,7 @@ describe('timing', () => {
       .onSecondCall()
       .returns(t2);
 
-    strictEqual(makeTimer()(), 10);
+    strictEqual(sr.core.timing.makeTimer()(), 10);
   });
 
   it('makeTimer returns function that returns diff in milliseconds', () => {
@@ -30,6 +36,6 @@ describe('timing', () => {
       .onSecondCall()
       .returns(t2);
 
-    strictEqual(makeTimerNs()(), 100);
+    strictEqual(sr.core.timing.makeTimerNs()(), 100);
   });
 });

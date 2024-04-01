@@ -1,63 +1,64 @@
 import { readdir, stat } from 'fs/promises';
 import { getLogger } from './logger';
-import { add as addShutdown } from './shutdown';
-import type { Module } from './types';
+import { add as addShutdown } from './modules/shutdown';
+import type { Module, ModuleHookFn, CoreServiceRegistry } from './types';
 
 const log = getLogger();
 type Modules = [string, string, Module][];
 
 export function getName(path: string, parent?: string) {
-  const file = path.split('/').pop();
-  if (!file) {
-    throw new Error(`Bad path: ${path}`);
+  const name = path
+    .replace(/\.(js|ts)$/, '')
+    .split(/[./]/)
+    .pop();
+
+  if (!name) {
+    throw new Error(`Bad path: "${path}"`);
   }
 
-  const name = file.replace(/\.(js|ts)$/, '');
   return parent ? [parent, name].join(':') : name;
 }
 
-export async function loadModules(path: string, prefix = '') {
+export async function loadModules<T extends CoreServiceRegistry>(
+  sr: Record<string, unknown>,
+  path: string,
+  prefix = '',
+) {
   const mods = await loadPath(path, []);
-  const promises = [];
+  const phase1 = [];
+  const phase2 = [];
+  const phase3 = [];
 
   for (const mod of mods) {
-    const { $onLoad, $onShutdown } = mod[2];
+    const { $onBind, $onLoad, $onRun, $onShutdown } = mod[2];
     const name = prefix ? `${prefix}:${mod[1]}` : mod[1];
 
     if ($onShutdown) {
-      addShutdown(name, () => $onShutdown(name));
+      addShutdown(name, async () =>
+        $onShutdown(sr as CoreServiceRegistry, name),
+      );
+    }
+
+    if ($onBind) {
+      phase1.push(['$onBind', name, path, $onBind] as const);
     }
 
     if ($onLoad) {
-      log.trace({
-        file: { path: path },
-        labels: { name, hook: '$onLoad' },
-        message: 'running hook',
-      });
-
-      promises.push($onLoad(name));
+      phase2.push(['$onBind', name, path, $onLoad] as const);
     }
-  }
-
-  await Promise.all(promises);
-
-  for (const mod of mods) {
-    const { $onRun } = mod[2];
 
     if ($onRun) {
-      const name = prefix ? `${prefix}:${mod[1]}` : mod[1];
-
-      log.trace({
-        file: { path: mod[0] },
-        labels: { name, hook: '$onRun' },
-        message: 'running hook',
-      });
-
-      $onRun(name);
+      phase3.push(['$onRun', name, path, $onRun] as const);
     }
   }
 
+  await runHooks(sr as CoreServiceRegistry, phase1);
+  await runHooks(sr as CoreServiceRegistry, phase2);
+  await runHooks(sr as CoreServiceRegistry, phase3);
+
   log.debug({ file: { path }, message: 'done loading modules' });
+
+  return sr as T;
 }
 
 async function loadDir(path: string, mods: Modules, parent?: string) {
@@ -86,4 +87,21 @@ async function loadPath(path: string, mods: Modules, parent?: string) {
   }
 
   return mods;
+}
+
+function runHooks(
+  sr: CoreServiceRegistry,
+  list: (readonly [string, string, string, ModuleHookFn])[],
+) {
+  return Promise.all(
+    list.map(([type, name, path, fn]) => {
+      log.trace({
+        file: { path: path },
+        labels: { name, hook: type },
+        message: 'running hook',
+      });
+
+      return fn(sr, name);
+    }),
+  );
 }
