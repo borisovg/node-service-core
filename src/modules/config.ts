@@ -1,8 +1,8 @@
 import type { CoreServiceRegistry } from '../types';
 
-export function $onBind(app: CoreServiceRegistry) {
-  app.core = app.core || {};
-  app.core.config = config;
+export function $onBind(sr: CoreServiceRegistry) {
+  sr.core = sr.core || {};
+  sr.core.config = config;
 }
 
 export const config = {

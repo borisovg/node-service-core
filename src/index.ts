@@ -18,16 +18,16 @@ export async function load<T extends CoreServiceRegistry>(
     shutdown(() => {});
   }
 
-  const app = registry || {};
+  const sr = registry || {};
 
   firstLoad = false;
-  await loadModules<T>(app, `${__dirname}/modules`, 'core');
+  await loadModules<T>(sr, `${__dirname}/modules`, 'core');
 
   if (typeof path === 'string') {
-    await loadModules(app, path);
+    await loadModules(sr, path);
   } else if (path) {
     for (const p of path) {
-      await loadModules(app, p);
+      await loadModules(sr, p);
     }
   }
 }

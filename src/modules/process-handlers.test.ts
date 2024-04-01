@@ -5,11 +5,11 @@ import * as shutdown from './shutdown';
 import type { CoreServiceRegistry } from '../types';
 
 describe('modules/process-handlers', () => {
-  const app = {} as CoreServiceRegistry;
+  const sr = {} as CoreServiceRegistry;
   const sandbox = createSandbox();
 
   beforeEach(async () => {
-    await loadModules(app, `${__dirname}/process-handlers.ts`);
+    await loadModules(sr, `${__dirname}/process-handlers.ts`);
   });
 
   afterEach(async () => {

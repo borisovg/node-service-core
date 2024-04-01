@@ -1,8 +1,8 @@
 import type { CoreServiceRegistry } from '../types';
 
-export function $onBind(app: CoreServiceRegistry) {
-  app.core = app.core || {};
-  app.core.timing = { makeTimer, makeTimerNs };
+export function $onBind(sr: CoreServiceRegistry) {
+  sr.core = sr.core || {};
+  sr.core.timing = { makeTimer, makeTimerNs };
 }
 
 /**

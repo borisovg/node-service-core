@@ -4,9 +4,9 @@ import type { CoreServiceRegistry } from '../types';
 
 type ShutdownActionFn = () => Promise<void>;
 
-export function $onBind(app: CoreServiceRegistry) {
-  app.core = app.core || {};
-  app.core.shutdown = { add, run };
+export function $onBind(sr: CoreServiceRegistry) {
+  sr.core = sr.core || {};
+  sr.core.shutdown = { add, run };
 }
 
 const actions: Map<string, ShutdownActionFn> = new Map();

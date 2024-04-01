@@ -3,10 +3,10 @@ import { shutdown, type CoreServiceRegistry } from '../..';
 import { loadModules } from '../../modules';
 
 describe('modules/loops/loop-store', () => {
-  const app = {} as CoreServiceRegistry;
+  const sr = {} as CoreServiceRegistry;
 
   beforeEach(async () => {
-    await loadModules(app, `${__dirname}/loop-store.ts`);
+    await loadModules(sr, `${__dirname}/loop-store.ts`);
   });
 
   afterEach(async () => shutdown(() => {}));
@@ -14,7 +14,7 @@ describe('modules/loops/loop-store', () => {
   it('adds a loop and returns loop object', (done) => {
     let i = 0;
 
-    const loop = app.core.loops.add('test', 5, () => {
+    const loop = sr.core.loops.add('test', 5, () => {
       if (i++ === 3) {
         done();
       }
@@ -28,13 +28,13 @@ describe('modules/loops/loop-store', () => {
     let j = 0;
     let k = 0;
 
-    app.core.loops.add('test-1', 3, () => {
+    sr.core.loops.add('test-1', 3, () => {
       i++;
     }),
-      app.core.loops.add('test-2', 4, () => {
+      sr.core.loops.add('test-2', 4, () => {
         j++;
       }),
-      app.core.loops.add('test-3', 5, () => {
+      sr.core.loops.add('test-3', 5, () => {
         k++;
       }),
       (function loop() {
@@ -48,25 +48,25 @@ describe('modules/loops/loop-store', () => {
   });
 
   it('throws error when adding a loop with an ID of an existing loop', () => {
-    app.core.loops.add('test', 5, () => {});
+    sr.core.loops.add('test', 5, () => {});
     throws(
-      () => app.core.loops.add('test', 3, () => {}),
+      () => sr.core.loops.add('test', 3, () => {}),
       /Duplicate loop ID: test/,
     );
   });
 
   it('does not throw when removing non-existent loop', () => {
-    app.core.loops.remove('foo');
+    sr.core.loops.remove('foo');
   });
 
   it('does not throw when starting an already started loop', () => {
-    const loop = app.core.loops.add('test', 5, () => {});
+    const loop = sr.core.loops.add('test', 5, () => {});
     loop.start();
   });
 
   it('exposes a method to stop and manually tick the loop', (done) => {
     let i = 0;
-    const loop = app.core.loops.add('test', 1, () => {
+    const loop = sr.core.loops.add('test', 1, () => {
       i++;
     });
 
@@ -87,8 +87,8 @@ describe('modules/loops/loop-store', () => {
   });
 
   it('returns a loop if it exists', () => {
-    app.core.loops.add('test', 5, () => {});
-    strictEqual(app.core.loops.get('test')?.id, 'test');
-    strictEqual(app.core.loops.get('foo'), undefined);
+    sr.core.loops.add('test', 5, () => {});
+    strictEqual(sr.core.loops.get('test')?.id, 'test');
+    strictEqual(sr.core.loops.get('foo'), undefined);
   });
 });

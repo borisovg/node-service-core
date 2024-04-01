@@ -4,11 +4,11 @@ import { type CoreServiceRegistry } from '..';
 import { loadModules } from '../modules';
 
 describe('modules/timing', () => {
-  const app = {} as CoreServiceRegistry;
+  const sr = {} as CoreServiceRegistry;
   const sandbox = createSandbox();
 
   before(async () => {
-    await loadModules(app, `${__dirname}/timing.ts`);
+    await loadModules(sr, `${__dirname}/timing.ts`);
   });
 
   it('makeTimer returns function that returns diff in milliseconds', () => {
@@ -22,7 +22,7 @@ describe('modules/timing', () => {
       .onSecondCall()
       .returns(t2);
 
-    strictEqual(app.core.timing.makeTimer()(), 10);
+    strictEqual(sr.core.timing.makeTimer()(), 10);
   });
 
   it('makeTimer returns function that returns diff in milliseconds', () => {
@@ -36,6 +36,6 @@ describe('modules/timing', () => {
       .onSecondCall()
       .returns(t2);
 
-    strictEqual(app.core.timing.makeTimerNs()(), 100);
+    strictEqual(sr.core.timing.makeTimerNs()(), 100);
   });
 });

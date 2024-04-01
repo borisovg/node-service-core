@@ -2,13 +2,13 @@ import { getLogger } from '../../logger';
 import { Loop, type LoopFn } from './loop';
 import type { CoreServiceRegistry } from '../../types';
 
-export function $onBind(app: CoreServiceRegistry) {
-  app.core = app.core || {};
-  app.core.loops = new LoopsModule();
+export function $onBind(sr: CoreServiceRegistry) {
+  sr.core = sr.core || {};
+  sr.core.loops = new LoopsModule();
 }
 
-export function $onShutdown(app: CoreServiceRegistry) {
-  return app.core.loops.removeAll();
+export function $onShutdown(sr: CoreServiceRegistry) {
+  return sr.core.loops.removeAll();
 }
 
 export class LoopsModule {

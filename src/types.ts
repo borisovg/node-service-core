@@ -34,7 +34,7 @@ export type Module = {
 };
 
 export type ModuleHookFn<T = CoreServiceRegistry> = (
-  app: T,
+  sr: T,
   name: string,
 ) => Promise<void> | void;
 

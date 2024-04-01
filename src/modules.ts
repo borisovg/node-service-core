@@ -20,7 +20,7 @@ export function getName(path: string, parent?: string) {
 }
 
 export async function loadModules<T extends CoreServiceRegistry>(
-  app: Record<string, unknown>,
+  sr: Record<string, unknown>,
   path: string,
   prefix = '',
 ) {
@@ -35,7 +35,7 @@ export async function loadModules<T extends CoreServiceRegistry>(
 
     if ($onShutdown) {
       addShutdown(name, async () =>
-        $onShutdown(app as CoreServiceRegistry, name),
+        $onShutdown(sr as CoreServiceRegistry, name),
       );
     }
 
@@ -52,13 +52,13 @@ export async function loadModules<T extends CoreServiceRegistry>(
     }
   }
 
-  await runHooks(app as CoreServiceRegistry, phase1);
-  await runHooks(app as CoreServiceRegistry, phase2);
-  await runHooks(app as CoreServiceRegistry, phase3);
+  await runHooks(sr as CoreServiceRegistry, phase1);
+  await runHooks(sr as CoreServiceRegistry, phase2);
+  await runHooks(sr as CoreServiceRegistry, phase3);
 
   log.debug({ file: { path }, message: 'done loading modules' });
 
-  return app as T;
+  return sr as T;
 }
 
 async function loadDir(path: string, mods: Modules, parent?: string) {
@@ -90,7 +90,7 @@ async function loadPath(path: string, mods: Modules, parent?: string) {
 }
 
 function runHooks(
-  app: CoreServiceRegistry,
+  sr: CoreServiceRegistry,
   list: (readonly [string, string, string, ModuleHookFn])[],
 ) {
   return Promise.all(
@@ -101,7 +101,7 @@ function runHooks(
         message: 'running hook',
       });
 
-      return fn(app, name);
+      return fn(sr, name);
     }),
   );
 }

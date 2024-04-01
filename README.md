@@ -24,10 +24,10 @@ An example of where this might be immediately useful is a collection of HTTP API
 
 In addition to auto-loading, each file can optionally export some hook methods:
 
-- `$onBind(app: ServiceRegistry, name: string) => Promise<void>` which are run first, blocking start-up until they complete
-- `$onLoad(app: ServiceRegistry, name: string) => Promise<void>` which are run after, blocking start-up until they complete
-- `$onRun(app: ServiceRegistry, name:string) => Promise<void>` which are run after, blocking start-up until they complete
-- `$onShutdown(app: ServiceRegistry, name: string) => Promise<void>` which are run at shutdown, blocking exit until they complete
+- `$onBind(sr: ServiceRegistry, name: string) => Promise<void>` which are run first, blocking start-up until they complete
+- `$onLoad(sr: ServiceRegistry, name: string) => Promise<void>` which are run after, blocking start-up until they complete
+- `$onRun(sr: ServiceRegistry, name:string) => Promise<void>` which are run after, blocking start-up until they complete
+- `$onShutdown(sr: ServiceRegistry, name: string) => Promise<void>` which are run at shutdown, blocking exit until they complete
 
 As an contrived example, we can add the following under `modules/loop.ts`:
 
@@ -70,17 +70,17 @@ export type ServiceRegistry = CoreServiceRegistry & {
 };
 
 // only use "$onBind" to add methods to the registry
-export function $onBind(app: ServiceRegistry) {
-  app.hello = {
+export function $onBind(sr: ServiceRegistry) {
+  sr.hello = {
     greet(name) {
       console.log(`Hello ${name}!`);
     },
   };
 }
 
-export function $onRun(app: ServiceRegistry, name: string) {
-  app.core.loops.add(name, 1000, () => {
-    app.hello.greet('World');
+export function $onRun(sr: ServiceRegistry, name: string) {
+  sr.core.loops.add(name, 1000, () => {
+    sr.hello.greet('World');
   });
 }
 ```

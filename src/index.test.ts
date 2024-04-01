@@ -29,20 +29,20 @@ describe('index', () => {
   });
 
   it('loads modules', async () => {
-    const app = {} as core.CoreServiceRegistry;
+    const sr = {} as core.CoreServiceRegistry;
     await core.load(`${__dirname}/logger.ts`);
     await core.load([`${__dirname}/logger.ts`]);
-    await core.load(undefined, app);
+    await core.load(undefined, sr);
 
-    strictEqual(typeof app.core.config.shutdown.shutdownDelay, 'number');
-    strictEqual(typeof app.core.config.shutdown.shutdownTimeout, 'number');
-    strictEqual(typeof app.core.loops.add, 'function');
-    strictEqual(typeof app.core.loops.get, 'function');
-    strictEqual(typeof app.core.loops.remove, 'function');
-    strictEqual(typeof app.core.loops.removeAll, 'function');
-    strictEqual(typeof app.core.shutdown.add, 'function');
-    strictEqual(typeof app.core.shutdown.run, 'function');
-    strictEqual(typeof app.core.timing.makeTimer, 'function');
-    strictEqual(typeof app.core.timing.makeTimerNs, 'function');
+    strictEqual(typeof sr.core.config.shutdown.shutdownDelay, 'number');
+    strictEqual(typeof sr.core.config.shutdown.shutdownTimeout, 'number');
+    strictEqual(typeof sr.core.loops.add, 'function');
+    strictEqual(typeof sr.core.loops.get, 'function');
+    strictEqual(typeof sr.core.loops.remove, 'function');
+    strictEqual(typeof sr.core.loops.removeAll, 'function');
+    strictEqual(typeof sr.core.shutdown.add, 'function');
+    strictEqual(typeof sr.core.shutdown.run, 'function');
+    strictEqual(typeof sr.core.timing.makeTimer, 'function');
+    strictEqual(typeof sr.core.timing.makeTimerNs, 'function');
   });
 });
