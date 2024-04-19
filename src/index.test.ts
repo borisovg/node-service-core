@@ -29,12 +29,14 @@ describe('index', () => {
   });
 
   it('loads modules', async () => {
-    const sr = {} as core.CoreServiceRegistry;
     await core.load(`${__dirname}/logger.ts`);
     await core.load([`${__dirname}/logger.ts`]);
     await core.load(['']);
-    await core.load(undefined, sr);
 
+    const sr = {} as core.CoreServiceRegistry;
+    const sr2 = await core.load(undefined, sr);
+
+    strictEqual(sr, sr2);
     strictEqual(typeof sr.core.config.shutdown.shutdownDelay, 'number');
     strictEqual(typeof sr.core.config.shutdown.shutdownTimeout, 'number');
     strictEqual(typeof sr.core.loops.add, 'function');
