@@ -19,8 +19,11 @@ export function $onShutdown() {
   process.removeListener('SIGTERM', handleSIGTERM);
 }
 
-function handleError(error: unknown) {
-  log.error({ error, message: 'crash' });
+function handleError(err: Record<string, unknown>) {
+  log.error({
+    error: { code: err.code, message: err.message, stack: err.stack },
+    message: 'crash',
+  });
   shutdown.run();
 }
 
