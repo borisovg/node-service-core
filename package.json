@@ -1,6 +1,6 @@
 {
   "name": "@borisovg/service-core",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Micro-framework for Node.js services",
   "license": "Apache-2.0",
   "main": "./dist/index.js",
@@ -11,20 +11,20 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@types/mocha": "^10",
-    "@types/node": "^20",
-    "@types/sinon": "^17",
-    "@typescript-eslint/eslint-plugin": "^7",
-    "@typescript-eslint/parser": "^7",
-    "c8": "^9",
-    "eslint": "^8",
-    "eslint-config-prettier": "^9",
-    "eslint-plugin-import": "^2",
-    "mocha": "^10",
-    "prettier": "^3",
-    "sinon": "^17",
-    "ts-mocha": "^10",
-    "typescript": "^5"
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.7",
+    "@types/sinon": "^17.0.3",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
+    "c8": "^9.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "mocha": "^10.4.0",
+    "prettier": "^3.2.5",
+    "sinon": "^17.0.1",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^5.4.5"
   },
   "eslintConfig": {
     "extends": [
