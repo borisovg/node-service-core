@@ -33,5 +33,5 @@ export async function load<T extends CoreServiceRegistry>(
     }
   }
 
-  return sr;
+  return sr as T;
 }
