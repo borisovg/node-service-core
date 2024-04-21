@@ -24,7 +24,7 @@ function handleError(err: Record<string, unknown>) {
     error: { code: err.code, message: err.message, stack: err.stack },
     message: 'crash',
   });
-  shutdown.run();
+  shutdown.run(() => process.exit(1));
 }
 
 function handleSIGINT() {

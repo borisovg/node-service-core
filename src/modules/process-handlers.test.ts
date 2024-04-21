@@ -3,6 +3,7 @@ import { loadModules } from '../modules';
 import { config } from './config';
 import * as shutdown from './shutdown';
 import type { CoreServiceRegistry } from '../types';
+import { strictEqual } from 'assert';
 
 describe('modules/process-handlers', () => {
   const sr = {} as CoreServiceRegistry;
@@ -18,11 +19,18 @@ describe('modules/process-handlers', () => {
   });
 
   it('logs an error on uncaughtException and exits', (done) => {
-    sandbox.stub(shutdown, 'run').callsFake(async () => done());
+    const spy = sandbox.stub(process, 'exit');
 
     new Promise((_, reject) =>
       setImmediate(() => reject(new Error('Test error'))),
     );
+
+    const timer = setInterval(() => {
+      if (!spy.callCount) return;
+      clearInterval(timer);
+      strictEqual(spy.firstCall.args[0], 1);
+      done();
+    });
   });
 
   it('handles SIGINT events', (done) => {
