@@ -2,7 +2,7 @@ import { config } from './config';
 import { getLogger } from '../logger';
 import type { CoreServiceRegistry } from '../types';
 
-type ShutdownActionFn = () => Promise<void>;
+type ShutdownActionFn = () => Promise<void> | void;
 
 export function $onBind(sr: CoreServiceRegistry) {
   sr.core = sr.core || {};
