@@ -1,4 +1,4 @@
-import { loadModules } from './modules';
+import { getName, loadModules } from './modules';
 import { run as shutdown } from './modules/shutdown';
 import { CoreServiceRegistry } from './types';
 
@@ -14,14 +14,16 @@ export async function load<T extends CoreServiceRegistry>(
   path?: string | string[],
   registry?: T,
 ) {
-  if (!firstLoad) {
-    shutdown(() => {});
+  const sr = registry || ({} as T);
+
+  if (firstLoad) {
+    firstLoad = false;
+    await loadModules<T>(sr, `${__dirname}/modules`, 'core');
+
+    sr.core.shutdown.add(getName(__dirname, 'core'), () => {
+      firstLoad = true;
+    });
   }
-
-  const sr = registry || {};
-
-  firstLoad = false;
-  await loadModules<T>(sr, `${__dirname}/modules`, 'core');
 
   if (typeof path === 'string') {
     await loadModules(sr, path);

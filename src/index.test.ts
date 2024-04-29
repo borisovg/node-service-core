@@ -2,9 +2,7 @@ import { strictEqual } from 'assert';
 import * as core from '.';
 
 describe('index', () => {
-  after((done) => {
-    core.shutdown(done);
-  });
+  afterEach(() => core.shutdown());
 
   it('exports config object', () => {
     strictEqual(typeof core.config.shutdown.shutdownDelay, 'number');
@@ -29,10 +27,6 @@ describe('index', () => {
   });
 
   it('loads modules', async () => {
-    await core.load(`${__dirname}/logger.ts`);
-    await core.load([`${__dirname}/logger.ts`]);
-    await core.load(['']);
-
     const sr = {} as core.CoreServiceRegistry;
     const sr2 = await core.load(undefined, sr);
 
@@ -47,5 +41,20 @@ describe('index', () => {
     strictEqual(typeof sr.core.shutdown.run, 'function');
     strictEqual(typeof sr.core.timing.makeTimer, 'function');
     strictEqual(typeof sr.core.timing.makeTimerNs, 'function');
+  });
+
+  it('loads core and extra modules from string path', async () => {
+    const sr = await core.load(`${__dirname}/logger.ts`);
+    strictEqual(typeof sr.core.config, 'object');
+  });
+
+  it('loads core and extra modules from list of paths', async () => {
+    const sr = await core.load([`${__dirname}/logger.ts`]);
+    strictEqual(typeof sr.core.config, 'object');
+  });
+
+  it('skips empty string in path list', async () => {
+    const sr = await core.load(['']);
+    strictEqual(typeof sr.core.config, 'object');
   });
 });
