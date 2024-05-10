@@ -10,8 +10,8 @@ clean:
 	rm -rf coverage dist node_modules $(NPM_LOCK)
 
 dist: node_modules $(TS_FILES) tsconfig.json Makefile
-	rm -rf dist
-	$(NPM_BIN)/tsc || rm -rf dist
+	rm -rf $@
+	$(NPM_BIN)/tsc || rm -rf $@
 
 .PHONY: lint
 lint: node_modules

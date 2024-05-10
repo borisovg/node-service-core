@@ -1,6 +1,7 @@
 .git*
 coverage
 dist/**/*.test.*
+dist/modules/dummy-module*
 Makefile
 src
 tsconfig.json

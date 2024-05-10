@@ -79,11 +79,16 @@ async function loadPath(path: string, mods: Modules, parent?: string) {
   } else if (
     !path.includes('.d.') &&
     !path.includes('.spec.') &&
-    !path.includes('.test.') &&
-    /\.(js|ts)$/.exec(path)
+    !path.includes('.test.')
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    mods.push([path, getName(path, parent), require(path) as Module]);
+    const ext = /\.(js|mjs|ts)$/.exec(path)?.[1];
+    if (ext) {
+      const mod =
+        ext === 'mjs'
+          ? await eval('(async () => import(path))()') // dirty hack to prevent TS from mangling the import call
+          : require(path);
+      mods.push([path, getName(path, parent), mod as Module]);
+    }
   }
 
   return mods;
