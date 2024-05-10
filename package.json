@@ -12,17 +12,17 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",
-    "@types/node": "^20.12.7",
+    "@types/node": "^20.12.11",
     "@types/sinon": "^17.0.3",
-    "@typescript-eslint/eslint-plugin": "^7.7.1",
-    "@typescript-eslint/parser": "^7.7.1",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
     "c8": "^9.1.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "mocha": "^10.4.0",
     "prettier": "^3.2.5",
-    "sinon": "^17.0.1",
+    "sinon": "^17.0.2",
     "ts-mocha": "^10.0.0",
     "typescript": "^5.4.5"
   },
@@ -45,6 +45,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/borisovg/node-service-core.git"
-  },
-  "packageManager": "pnpm@9.0.4+sha512.c374b52de3de88c58fd8333df664a737279cdb0e1344ba4054d3b1fffa9a1a3670854f755dca4f16adea3f14be9896a7fcaf167409fe0c1ad60475271dafe81a"
+  }
 }
