@@ -11,32 +11,21 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
-    "@types/node": "^20.12.11",
+    "@eslint/js": "^9.14.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/mocha": "^10.0.9",
+    "@types/node": "^22.8.6",
     "@types/sinon": "^17.0.3",
-    "@typescript-eslint/eslint-plugin": "^7.8.0",
-    "@typescript-eslint/parser": "^7.8.0",
-    "c8": "^9.1.0",
-    "eslint": "^8.57.0",
+    "c8": "^10.1.2",
+    "eslint": "^9.14.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "mocha": "^10.4.0",
-    "prettier": "^3.2.5",
-    "sinon": "^17.0.2",
+    "eslint-plugin-prettier": "^5.2.1",
+    "mocha": "^10.8.2",
+    "prettier": "^3.3.3",
+    "sinon": "^19.0.2",
     "ts-mocha": "^10.0.0",
-    "typescript": "^5.4.5"
-  },
-  "eslintConfig": {
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "prettier"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "root": true
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.12.2"
   },
   "prettier": {
     "singleQuote": true,
