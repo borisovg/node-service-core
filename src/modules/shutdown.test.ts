@@ -38,7 +38,7 @@ describe('modules/shutdown', () => {
     sr.core.shutdown.run(done);
   });
 
-  it('logs a message if action failes and continues', (done) => {
+  it('logs a message if action fails and continues', (done) => {
     const results: number[] = [];
 
     sr.core.shutdown.add(

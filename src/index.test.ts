@@ -2,7 +2,7 @@ import { strictEqual } from 'assert';
 import * as core from '.';
 
 describe('index', () => {
-  afterEach(() => core.shutdown());
+  afterEach(() => core.shutdown(() => {}));
 
   it('exports config object', () => {
     strictEqual(typeof core.config.shutdown.shutdownDelay, 'number');
