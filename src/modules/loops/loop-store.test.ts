@@ -28,6 +28,7 @@ describe('modules/loops/loop-store', () => {
     let j = 0;
     let k = 0;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     sr.core.loops.add('test-1', 3, () => {
       i++;
     }),

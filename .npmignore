@@ -2,6 +2,7 @@
 coverage
 dist/**/*.test.*
 dist/modules/dummy-module*
+eslint.config.mjs
 Makefile
 src
 tsconfig.json

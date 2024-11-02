@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { readdir, stat } from 'fs/promises';
 import { getLogger } from './logger';
 import { add as addShutdown } from './modules/shutdown';
