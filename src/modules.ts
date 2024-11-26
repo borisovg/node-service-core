@@ -45,7 +45,7 @@ export async function loadModules<T extends CoreServiceRegistry>(
     }
 
     if ($onLoad) {
-      phase2.push(['$onBind', name, path, $onLoad] as const);
+      phase2.push(['$onLoad', name, path, $onLoad] as const);
     }
 
     if ($onRun) {
