@@ -28,24 +28,24 @@ describe('modules/loops/loop-store', () => {
     let j = 0;
     let k = 0;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     sr.core.loops.add('test-1', 3, () => {
       i++;
-    }),
-      sr.core.loops.add('test-2', 4, () => {
-        j++;
-      }),
-      sr.core.loops.add('test-3', 5, () => {
-        k++;
-      }),
-      (function loop() {
-        if (i < 3 || j < 3 || k < 3) {
-          setTimeout(loop, 2);
-          return;
-        }
+    });
+    sr.core.loops.add('test-2', 4, () => {
+      j++;
+    });
+    sr.core.loops.add('test-3', 5, () => {
+      k++;
+    });
 
-        done();
-      })();
+    (function loop() {
+      if (i < 3 || j < 3 || k < 3) {
+        setTimeout(loop, 2);
+        return;
+      }
+
+      done();
+    })();
   });
 
   it('throws error when adding a loop with an ID of an existing loop', () => {
