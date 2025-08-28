@@ -24,5 +24,5 @@ node_modules: package.json
 
 .PHONY: test
 test: dist
-	$(NPM_BIN)/c8 --reporter=none $(NPM_BIN)/ts-mocha -b 'src/**/*.test.ts' \
-		&& $(NPM_BIN)/c8 report --all --clean -n src -x 'src/**/*.test.ts' -x 'src/types.*' --reporter=text
+	$(NPM_BIN)/nyc --reporter=text --all --include='src/**/*.ts' --exclude='src/**/*.test.ts' --exclude='src/types.*' \
+		$(NPM_BIN)/ts-mocha -b 'src/**/*.test.ts'
