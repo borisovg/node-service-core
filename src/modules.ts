@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-import { readdir, stat } from 'fs/promises';
+import { readdir, stat } from 'node:fs/promises';
 import { getLogger } from './logger';
 import { add as addShutdown } from './modules/shutdown';
-import type { Module, ModuleHookFn, CoreServiceRegistry } from './types';
+import type { CoreServiceRegistry, Module, ModuleHookFn } from './types';
 
 const log = getLogger();
 type Modules = [string, string, Module][];
@@ -84,14 +83,17 @@ async function loadPath(path: string, mods: Modules, parent?: string) {
   ) {
     const ext = /\.(js|mjs|ts)$/.exec(path)?.[1];
     if (ext) {
-      let mod;
+      let mod: { default?: Module } | Module;
       try {
-        mod = await import(path);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (e) {
-        mod = require(path);
+        mod = (await import(path)) as { default?: Module } | Module;
+      } catch {
+        mod = require(path) as { default?: Module } | Module;
       }
-      mods.push([path, getName(path, parent), (mod.default || mod) as Module]);
+      const loaded =
+        typeof mod === 'object' && mod !== null && 'default' in mod
+          ? ((mod as { default?: Module }).default ?? mod)
+          : mod;
+      mods.push([path, getName(path, parent), loaded as Module]);
     }
   }
 

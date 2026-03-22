@@ -1,5 +1,5 @@
-import { strictEqual, throws } from 'assert';
-import { shutdown, type CoreServiceRegistry } from '../..';
+import { strictEqual, throws } from 'node:assert';
+import { type CoreServiceRegistry, shutdown } from '../..';
 import { loadModules } from '../../modules';
 
 describe('modules/loops/loop-store', () => {

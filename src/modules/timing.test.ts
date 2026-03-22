@@ -1,6 +1,6 @@
 import { strictEqual } from 'node:assert';
 import { createSandbox } from 'sinon';
-import { type CoreServiceRegistry } from '..';
+import type { CoreServiceRegistry } from '..';
 import { loadModules } from '../modules';
 
 describe('modules/timing', () => {

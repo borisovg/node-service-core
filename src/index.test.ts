@@ -1,4 +1,4 @@
-import { strictEqual } from 'assert';
+import { strictEqual } from 'node:assert';
 import * as core from '.';
 
 describe('index', () => {

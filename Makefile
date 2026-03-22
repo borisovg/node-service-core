@@ -15,8 +15,7 @@ dist: node_modules $(TS_FILES) tsconfig.json Makefile
 
 .PHONY: lint
 lint: node_modules
-	$(NPM_BIN)/prettier --check 'src/**/*.{js,ts,json,md,yml}'
-	$(NPM_BIN)/eslint src/ --max-warnings 0
+	$(NPM_BIN)/biome check --write --error-on-warnings
 
 node_modules: package.json
 	$(NPM) install || (rm -rf node_modules; exit 1)

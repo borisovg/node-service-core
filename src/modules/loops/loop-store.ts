@@ -1,6 +1,6 @@
 import { getLogger } from '../../logger';
-import { Loop, type LoopFn } from './loop';
 import type { CoreServiceRegistry } from '../../types';
+import { Loop, type LoopFn } from './loop';
 
 export function $onBind(sr: CoreServiceRegistry) {
   sr.core = sr.core || {};

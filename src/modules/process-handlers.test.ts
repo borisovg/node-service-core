@@ -1,9 +1,9 @@
+import { strictEqual } from 'node:assert';
 import { createSandbox } from 'sinon';
 import { loadModules } from '../modules';
+import type { CoreServiceRegistry } from '../types';
 import { config } from './config';
 import * as shutdown from './shutdown';
-import type { CoreServiceRegistry } from '../types';
-import { strictEqual } from 'assert';
 
 describe('modules/process-handlers', () => {
   const sr = {} as CoreServiceRegistry;

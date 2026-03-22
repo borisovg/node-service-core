@@ -1,8 +1,8 @@
 import { deepStrictEqual, throws } from 'node:assert';
 import { createSandbox } from 'sinon';
-import { config } from './config';
+import type { CoreServiceRegistry } from '..';
 import { loadModules } from '../modules';
-import { type CoreServiceRegistry } from '..';
+import { config } from './config';
 
 describe('modules/shutdown', () => {
   const sr = {} as CoreServiceRegistry;

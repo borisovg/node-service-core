@@ -1,10 +1,10 @@
 import { getName, loadModules } from './modules';
 import { run as shutdown } from './modules/shutdown';
-import { CoreServiceRegistry } from './types';
+import type { CoreServiceRegistry } from './types';
 
-export { config } from './modules/config';
 export { getLogger, setLogger } from './logger';
 export { getName } from './modules';
+export { config } from './modules/config';
 export type * from './types';
 export { shutdown };
 

@@ -1,6 +1,6 @@
-import { config } from './config';
 import { getLogger } from '../logger';
 import type { CoreServiceRegistry } from '../types';
+import { config } from './config';
 
 type ShutdownActionFn = () => Promise<void> | void;
 

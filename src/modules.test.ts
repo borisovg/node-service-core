@@ -1,4 +1,4 @@
-import { throws } from 'assert';
+import { throws } from 'node:assert';
 import { getName, loadModules } from './modules';
 
 describe('modules', () => {
