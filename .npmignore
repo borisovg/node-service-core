@@ -1,4 +1,6 @@
 .git*
+.nyc_output
+.vscode
 coverage
 dist/**/*.test.*
 dist/modules/dummy-module*
@@ -6,3 +8,4 @@ biome.json
 Makefile
 src
 tsconfig.json
+tsconfig-build.json
