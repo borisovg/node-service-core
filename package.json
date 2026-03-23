@@ -22,7 +22,7 @@
     "nyc": "^17",
     "sinon": "^21",
     "ts-mocha": "^11",
-    "typescript": "^5"
+    "typescript": "^6.0.0"
   },
   "repository": {
     "type": "git",
