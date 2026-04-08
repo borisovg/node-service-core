@@ -19,7 +19,7 @@
     "@types/node": "^24",
     "@types/sinon": "^17",
     "mocha": "^11",
-    "nyc": "^17",
+    "nyc": "^18.0.0",
     "sinon": "^21",
     "ts-mocha": "^11",
     "typescript": "^5"
