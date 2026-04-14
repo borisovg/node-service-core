@@ -13,16 +13,22 @@
   "engines": {
     "node": ">=18"
   },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "devDependencies": {
     "@biomejs/biome": "^2",
     "@types/mocha": "^10",
-    "@types/node": "^24",
-    "@types/sinon": "^17",
+    "@types/node": "^25",
+    "@types/sinon": "^21",
     "mocha": "^11",
-    "nyc": "^17",
+    "nyc": "^18",
     "sinon": "^21",
     "ts-mocha": "^11",
-    "typescript": "^5"
+    "typescript": "^6"
   },
   "repository": {
     "type": "git",
