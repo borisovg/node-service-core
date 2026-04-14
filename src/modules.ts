@@ -87,6 +87,7 @@ async function loadPath(path: string, mods: Modules, parent?: string) {
       try {
         mod = (await import(path)) as { default?: Module } | Module;
       } catch {
+        // biome-ignore lint/style/noCommonJs: there are edge cases where this may be needed
         mod = require(path) as { default?: Module } | Module;
       }
       const loaded =

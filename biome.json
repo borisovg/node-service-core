@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.8/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -17,6 +17,11 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "style": {
+        "noDefaultExport": "error",
+        "noCommonJs": "error",
+        "useImportType": "error"
+      },
       "suspicious": {
         "noConsole": "error",
         "noSkippedTests": "error"
