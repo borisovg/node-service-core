@@ -19,7 +19,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - uses: pnpm/action-setup@v5
         with:
-          version: 10
+          version: 11
       - run: pnpm install --frozen-lockfile
       - run: make test
       - name: Upload coverage to Codecov
