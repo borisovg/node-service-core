@@ -31,6 +31,7 @@ export async function loadModules<T extends CoreServiceRegistry>(
 
   for (const mod of mods) {
     const { $onBind, $onLoad, $onRun, $onShutdown } = mod[2];
+    const modPath = mod[0];
     const name = prefix ? `${prefix}:${mod[1]}` : mod[1];
 
     if ($onShutdown) {
@@ -40,15 +41,15 @@ export async function loadModules<T extends CoreServiceRegistry>(
     }
 
     if ($onBind) {
-      phase1.push(['$onBind', name, path, $onBind] as const);
+      phase1.push(['$onBind', name, modPath, $onBind] as const);
     }
 
     if ($onLoad) {
-      phase2.push(['$onLoad', name, path, $onLoad] as const);
+      phase2.push(['$onLoad', name, modPath, $onLoad] as const);
     }
 
     if ($onRun) {
-      phase3.push(['$onRun', name, path, $onRun] as const);
+      phase3.push(['$onRun', name, modPath, $onRun] as const);
     }
   }
 
