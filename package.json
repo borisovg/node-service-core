@@ -23,7 +23,7 @@
     "@biomejs/biome": "^2",
     "@types/mocha": "^10",
     "@types/node": "^25",
-    "@types/sinon": "^21",
+    "@types/sinon": "^22.0.0",
     "mocha": "^11",
     "nyc": "^18",
     "sinon": "^22",
