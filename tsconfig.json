@@ -10,7 +10,7 @@
     "module": "nodenext",
     "target": "es2022",
     "lib": ["es2022"],
-    "types": ["node", "mocha"],
+    "types": ["node", "vitest/globals"],
     "esModuleInterop": true,
 
     // Other Outputs

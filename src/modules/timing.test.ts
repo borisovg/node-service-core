@@ -1,13 +1,11 @@
 import { strictEqual } from 'node:assert';
-import { createSandbox } from 'sinon';
 import type { CoreServiceRegistry } from '..';
 import { loadModules } from '../modules';
 
 describe('modules/timing', () => {
   const sr = {} as CoreServiceRegistry;
-  const sandbox = createSandbox();
 
-  before(async () => {
+  beforeAll(async () => {
     await loadModules(sr, `${__dirname}/timing.ts`);
   });
 
@@ -15,12 +13,7 @@ describe('modules/timing', () => {
     const t1 = Date.now();
     const t2 = t1 + 10;
 
-    sandbox
-      .stub(Date, 'now')
-      .onFirstCall()
-      .returns(t1)
-      .onSecondCall()
-      .returns(t2);
+    vi.spyOn(Date, 'now').mockReturnValueOnce(t1).mockReturnValueOnce(t2);
 
     strictEqual(sr.core.timing.makeTimer()(), 10);
   });
@@ -29,12 +22,9 @@ describe('modules/timing', () => {
     const t1 = process.hrtime.bigint();
     const t2 = t1 + 100n;
 
-    sandbox
-      .stub(process.hrtime, 'bigint')
-      .onFirstCall()
-      .returns(t1)
-      .onSecondCall()
-      .returns(t2);
+    vi.spyOn(process.hrtime, 'bigint')
+      .mockReturnValueOnce(t1)
+      .mockReturnValueOnce(t2);
 
     strictEqual(sr.core.timing.makeTimerNs()(), 100);
   });

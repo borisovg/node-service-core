@@ -22,7 +22,7 @@ describe('logger', () => {
     },
   };
 
-  after(() => setLogger());
+  afterAll(() => setLogger());
 
   afterEach(() => logs.splice(0));
 

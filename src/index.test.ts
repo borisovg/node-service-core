@@ -53,6 +53,12 @@ describe('index', () => {
     strictEqual(typeof sr.core.config, 'object');
   });
 
+  it('loads core modules only once', async () => {
+    await core.load();
+    const sr = await core.load();
+    strictEqual(sr.core, undefined);
+  });
+
   it('skips empty string in path list', async () => {
     const sr = await core.load(['']);
     strictEqual(typeof sr.core.config, 'object');

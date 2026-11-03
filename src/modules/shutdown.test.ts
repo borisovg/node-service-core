@@ -1,20 +1,18 @@
 import { deepStrictEqual, throws } from 'node:assert';
-import { createSandbox } from 'sinon';
 import type { CoreServiceRegistry } from '..';
 import { loadModules } from '../modules';
 import { config } from './config';
 
 describe('modules/shutdown', () => {
   const sr = {} as CoreServiceRegistry;
-  const sandbox = createSandbox();
 
-  before(async () => {
+  beforeAll(async () => {
     await loadModules(sr, `${__dirname}/shutdown.ts`);
   });
 
   afterEach(async () => {
     await sr.core.shutdown.run(() => {});
-    sandbox.restore();
+    vi.restoreAllMocks();
   });
 
   it('throws an error on duplicate ID', () => {
@@ -27,51 +25,53 @@ describe('modules/shutdown', () => {
     });
   });
 
-  it('timeout for tasks', (done) => {
-    sandbox.replace(config.shutdown, 'shutdownTimeout', 10);
+  it('timeout for tasks', () =>
+    new Promise<void>((done) => {
+      vi.spyOn(config.shutdown, 'shutdownTimeout', 'get').mockReturnValue(10);
 
-    sr.core.shutdown.add(
-      'TEST',
-      () => new Promise((resolve) => setTimeout(resolve, 20)),
-    );
+      sr.core.shutdown.add(
+        'TEST',
+        () => new Promise((resolve) => setTimeout(resolve, 20)),
+      );
 
-    sr.core.shutdown.run(done);
-  });
+      sr.core.shutdown.run(done);
+    }));
 
-  it('logs a message if action fails and continues', (done) => {
-    const results: number[] = [];
+  it('logs a message if action fails and continues', () =>
+    new Promise<void>((done) => {
+      const results: number[] = [];
 
-    sr.core.shutdown.add(
-      'TEST-1',
-      () =>
-        new Promise((_, reject) => {
-          results.push(1);
-          reject(new Error('Test Error'));
-        }),
-    );
+      sr.core.shutdown.add(
+        'TEST-1',
+        () =>
+          new Promise((_, reject) => {
+            results.push(1);
+            reject(new Error('Test Error'));
+          }),
+      );
 
-    sr.core.shutdown.add(
-      'TEST-2',
-      () =>
-        new Promise((resolve) => {
-          results.push(2);
-          resolve();
-        }),
-    );
+      sr.core.shutdown.add(
+        'TEST-2',
+        () =>
+          new Promise((resolve) => {
+            results.push(2);
+            resolve();
+          }),
+      );
 
-    sr.core.shutdown.run(() => {
-      deepStrictEqual(results, [1, 2]);
-      done();
-    });
-  });
+      sr.core.shutdown.run(() => {
+        deepStrictEqual(results, [1, 2]);
+        done();
+      });
+    }));
 
-  it('exits the process if no callback is passed', (done) => {
-    sandbox.replace(config.shutdown, 'shutdownDelay', 10);
+  it('exits the process if no callback is passed', () =>
+    new Promise<void>((done) => {
+      vi.spyOn(config.shutdown, 'shutdownDelay', 'get').mockReturnValue(10);
 
-    sandbox
-      .stub(process, 'exit')
-      .callsFake((() => done()) as typeof process.exit);
+      vi.spyOn(process, 'exit').mockImplementation((() =>
+        done()) as typeof process.exit);
 
-    sr.core.shutdown.run();
-  });
+      sr.core.shutdown.run();
+    }));
 });

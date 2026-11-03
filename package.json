@@ -21,14 +21,10 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2",
-    "@types/mocha": "^10",
-    "@types/node": "^25",
-    "@types/sinon": "^21",
-    "mocha": "^11",
-    "nyc": "^18",
-    "sinon": "^22",
-    "ts-mocha": "^11",
-    "typescript": "^6"
+    "@types/node": "^26",
+    "@vitest/coverage-v8": "^5",
+    "typescript": "^7",
+    "vitest": "^5"
   },
   "repository": {
     "type": "git",

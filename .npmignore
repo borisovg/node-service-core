@@ -1,5 +1,4 @@
 .git*
-.nyc_output
 .vscode
 coverage
 dist/**/*.test.*
@@ -9,3 +8,4 @@ Makefile
 src
 tsconfig.json
 tsconfig-build.json
+vitest.config.mjs

@@ -8,7 +8,7 @@ all: dist
 
 .PHONY: clean
 clean:
-	rm -rf .nyc_output coverage dist node_modules $(NPM_LOCK)
+	rm -rf coverage dist node_modules $(NPM_LOCK)
 
 dist: node_modules $(TS_FILES) $(TS_CONFIGS) Makefile
 	rm -rf $@
@@ -24,5 +24,4 @@ node_modules: package.json
 
 .PHONY: test
 test: dist
-	$(NPM_BIN)/nyc --reporter=text --reporter=lcov --all --include='src/**/*.ts' --exclude='src/**/*.test.ts' --exclude='src/types.*' \
-		$(NPM_BIN)/ts-mocha -b 'src/**/*.test.ts'
+	$(NPM_BIN)/vitest run --coverage --bail 1
